@@ -10,8 +10,9 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 import mysql.connector
 from mysql.connector import errorcode
+from scrapy.crawler import CrawlerProcess
 
-#MySQL Connection
+# MySQL Connection
 try:
     # use database credentials and name for connections
     mydb = mysql.connector.connect(host='localhost', user='user1', password='password1', database='rsg_db')
@@ -44,3 +45,10 @@ class Rsg(CrawlSpider):
 		myquery = 'INSERT IGNORE INTO links (url) VALUE ( "'+y+'" );'
 		cursor.execute(myquery)
 		mydb.commit()	
+
+
+if __name__ == "__main__":
+	process = CrawlerProcess()
+	process.crawl(Rsg)
+	process.start()
+	
